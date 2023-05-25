@@ -1,0 +1,67 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin"
+    }
+  ],
+  "notes": [
+    {
+      "id": 1,
+      "title": "Note 1",
+      "description": "Description of Note 1",
+      "importance": "High",
+      "authorId": 1
+    },
+    {
+      "title": "4445",
+      "description": "1545",
+      "importance": "High",
+      "authorId": 1,
+      "id": 4
+    },
+    {
+      "title": "4445",
+      "description": "1545",
+      "importance": "High",
+      "authorId": 1,
+      "id": 5
+    },
+    {
+      "title": "66",
+      "description": "4454",
+      "importance": "Low",
+      "authorId": 1,
+      "id": 6
+    },
+    {
+      "title": "test",
+      "description": "ddfdf",
+      "importance": "Medium",
+      "authorId": 1,
+      "id": 7
+    },
+    {
+      "title": "ghg",
+      "description": "gg",
+      "importance": "Low",
+      "authorId": 1,
+      "id": 8
+    },
+    {
+      "title": "2232",
+      "description": "262",
+      "importance": "Low",
+      "authorId": 1,
+      "id": 9
+    },
+    {
+      "title": "admin",
+      "description": "admin",
+      "importance": "Low",
+      "authorId": 1,
+      "id": 10
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin"
+    }
+  ],
+  "notes": [
+    {
+      "id": 1,
+      "title": "Note 1",
+      "description": "Description of Note 1",
+      "importance": "High",
+      "authorId": 1
+    },
+    {
+      "id": 2,
+      "title": "Note 2",
+      "description": "Description of Note 2",
+      "importance": "Medium",
+      "authorId": 1
+    },
+    {
+      "id": 3,
+      "title": "Note 3",
+      "description": "Description of Note 3",
+      "importance": "Low",
+      "authorId": 1
+    }
+  ]
+}

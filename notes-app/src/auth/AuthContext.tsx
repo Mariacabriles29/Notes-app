@@ -1,49 +1,63 @@
-// AuthContext.js
 import React, { createContext, useState } from "react";
-import { loginUser } from "../api/services/Api";
+import axios from "axios";
 
-const AuthContext = createContext({
-  isLoggedIn: false,
-  currentUser: null,
-  login: (username: string, password: string) => Promise<void>,
+export interface User {
+  id: string;
+  username: string;
+  password: string;
+  status: string;
+}
+
+interface UserContextProps {
+  user: User | null;
+  login: (username: string, password: string) => Promise<boolean>;
+  logout: () => void;
+}
+
+export const UserContext = createContext<UserContextProps>({
+  user: null,
+  login: () => Promise.resolve(false),
   logout: () => {},
 });
 
-const AuthProvider = ({ children }: any) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState<any>(null);
+export const UserProvider = ({ children }: any) => {
+  const [user, setUser] = useState<User | null>(null);
 
-  const login = async (username: string, password: string) => {
+  const login = async (
+    username: string,
+    password: string
+  ): Promise<boolean> => {
     try {
-      const user = await loginUser(username, password);
-      if (user) {
-        setIsLoggedIn(true);
-        setCurrentUser(user);
+      const response = await axios.get("http://localhost:3001/users");
+
+      const currentUser = response.data.find((us: User) => {
+        if (us.username === username) return us;
+      });
+
+      if (currentUser && response.status === 200) {
+        setUser({
+          id: currentUser.id,
+          username,
+          password,
+          status: "authenticated",
+        });
+        return true;
       } else {
-        throw new Error("Credenciales inválidas");
+        return false;
       }
     } catch (error) {
-      throw new Error("Error de inicio de sesión");
+      console.error("Error en la solicitud de inicio de sesión:", error);
+      return false;
     }
   };
 
-  const logout = () => {
-    setIsLoggedIn(false);
-    setCurrentUser(null);
-  };
-
-  const authContextValue: any = {
-    isLoggedIn,
-    currentUser,
-    login,
-    logout,
+  const logout = (): void => {
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={authContextValue}>
+    <UserContext.Provider value={{ user, login, logout }}>
       {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 };
-
-export { AuthContext, AuthProvider };

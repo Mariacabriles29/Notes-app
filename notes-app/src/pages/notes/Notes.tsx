@@ -75,26 +75,6 @@ export const NotesPage: React.FC = () => {
           <AddIcon onClick={handleCreateNotes} />
         </Fab>
         <h2>Notes</h2>
-        {/* {notes.map((note) => (
-          <div key={note.id}>
-            <h3>{note.title}</h3>
-            <p>{note.description}</p>
-            <p>Importance: {note.importance}</p>
-            <p>
-              Author: {`${note.authorId}` === user?.id ? "You" : "Someone else"}
-            </p>
-            {`${note.authorId}` === user?.id && (
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => handleDeleteNote(note.id)}
-              >
-                Delete
-              </Button>
-            )}
-            <hr />
-          </div>
-        ))} */}
 
         <Container sx={{ py: 0 }} maxWidth="md">
           {/* End hero unit */}

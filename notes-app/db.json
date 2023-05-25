@@ -4,43 +4,20 @@
       "id": 1,
       "username": "admin",
       "password": "admin"
+    },
+    {
+      "id": 2,
+      "username": "admin2",
+      "password": "admin2"
     }
   ],
   "notes": [
     {
-      "id": 1,
-      "title": "Note 1",
-      "description": "Description of Note 1",
-      "importance": "High",
-      "authorId": 1
-    },
-    {
       "title": "4445",
       "description": "1545",
       "importance": "High",
-      "authorId": 1,
+      "authorId": 2,
       "id": 4
-    },
-    {
-      "title": "4445",
-      "description": "1545",
-      "importance": "High",
-      "authorId": 1,
-      "id": 5
-    },
-    {
-      "title": "66",
-      "description": "4454",
-      "importance": "Low",
-      "authorId": 1,
-      "id": 6
-    },
-    {
-      "title": "test",
-      "description": "ddfdf",
-      "importance": "Medium",
-      "authorId": 1,
-      "id": 7
     },
     {
       "title": "ghg",
@@ -57,11 +34,25 @@
       "id": 9
     },
     {
-      "title": "admin",
-      "description": "admin",
+      "title": "admin2",
+      "description": "dfdf",
+      "importance": "Low",
+      "authorId": 2,
+      "id": 11
+    },
+    {
+      "title": "ee",
+      "description": "",
       "importance": "Low",
       "authorId": 1,
-      "id": 10
+      "id": 13
+    },
+    {
+      "title": "admin2",
+      "description": "admin2",
+      "importance": "Medium",
+      "authorId": 1,
+      "id": 14
     }
   ]
 }

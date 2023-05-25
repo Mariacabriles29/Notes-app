@@ -14,12 +14,17 @@ import {
   CardContent,
   Typography,
   CardActions,
+  InputBase,
 } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import EditIcon from "@mui/icons-material/Edit";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import NavigationIcon from "@mui/icons-material/Navigation";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { UpdateNotes } from "../../components/update-notes/UpdateNotes";
+import { toast } from "react-toastify";
+import { styled, alpha } from "@mui/material/styles";
+
+import SearchIcon from "@mui/icons-material/Search";
+
 type Note = {
   id: number;
   title: string;
@@ -28,10 +33,66 @@ type Note = {
   authorId: number;
 };
 
+type User = {
+  id: number;
+  username: string;
+  password: string;
+};
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
+      },
+    },
+  },
+}));
+
 export const NotesPage: React.FC = () => {
   const { user } = useContext(UserContext);
   const [notes, setNotes] = useState<Note[]>([]);
+  const [listUsers, setListUsers] = useState<User[]>([]);
   const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
+  const [noteId, setNoteId] = useState(0);
+  const handleOpen = (id: number) => {
+    setNoteId(id);
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -43,15 +104,64 @@ export const NotesPage: React.FC = () => {
       }
     };
 
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get<User[]>("http://localhost:3001/users");
+        setListUsers(response.data);
+      } catch (error) {
+        console.error("Failed to fetch notes", error);
+      }
+    };
+
     fetchNotes();
+    fetchUsers();
   }, []);
 
-  const handleDeleteNote = async (id: number) => {
+  const handleDeleteNote = async (card: any) => {
     try {
-      await axios.delete(`http://localhost:3001/notes/${id}`);
-      setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+      console.log("card ", card);
+      if (card.authorId === user?.id) {
+        const response = await axios.delete(
+          `http://localhost:3001/notes/${card.id}`
+        );
+        if (response.status === 200) {
+          toast.success("Nota borrada", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setNotes((prevNotes) =>
+            prevNotes.filter((note) => note.id !== card.id)
+          );
+        }
+      } else {
+        toast.error("Tu no tienes permisos para borrar esta nota", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     } catch (error) {
       console.error("Failed to delete note", error);
+    }
+  };
+
+  const getNameUser = (id: number) => {
+    const currentUser = listUsers.find((u) => u.id === id);
+    if (currentUser) {
+      return currentUser.username;
+    } else {
+      return "desconocido";
     }
   };
 
@@ -71,10 +181,33 @@ export const NotesPage: React.FC = () => {
           width: "100%",
         }}
       >
-        <Fab color="primary" aria-label="add">
-          <AddIcon onClick={handleCreateNotes} />
-        </Fab>
-        <h2>Notes</h2>
+        <Card
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            padding: "8px",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+            maxWidth: "400px",
+          }}
+        >
+          <Search onChange={(e: any) => console.log("e ", e.target.value)}>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ "aria-label": "search" }}
+            />
+          </Search>
+
+          <Fab color="primary" aria-label="add">
+            <AddIcon onClick={handleCreateNotes} />
+          </Fab>
+        </Card>
+        <h2>Notas</h2>
 
         <Container sx={{ py: 0 }} maxWidth="md">
           {/* End hero unit */}
@@ -101,16 +234,26 @@ export const NotesPage: React.FC = () => {
                       {card.title}
                     </Typography>
                     <Typography>{card.description}</Typography>
+                    <Typography fontSize={12} fontWeight={600}>
+                      autor: {getNameUser(card.authorId)}
+                    </Typography>
                   </CardContent>
                   <CardActions>
-                    <Fab size="small" color="secondary" aria-label="edit">
+                    <Fab
+                      size="small"
+                      color="secondary"
+                      aria-label="edit"
+                      onClick={() => {
+                        handleOpen(card.id);
+                      }}
+                    >
                       <EditIcon />
                     </Fab>
                     <Fab
                       size="small"
                       color="secondary"
                       aria-label="edit"
-                      onClick={() => handleDeleteNote(card.id)}
+                      onClick={() => handleDeleteNote(card)}
                     >
                       <DeleteIcon />
                     </Fab>
@@ -120,7 +263,8 @@ export const NotesPage: React.FC = () => {
             ))}
           </Grid>
         </Container>
-      </Box>
+      </Box>{" "}
+      <UpdateNotes open={open} handleClose={handleClose} noteId={noteId} />
     </Container>
   );
 };

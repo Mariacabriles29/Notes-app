@@ -35,6 +35,23 @@ server.post("/login", (req, res) => {
   }
 });
 
+server.get("/test", (req, res) => {
+  const { username, password } = req.body;
+  const user = router.db.get("users");
+
+  if (user) {
+    res
+      .status(200)
+      .json({ success: true, message: "Inicio de sesión exitoso" });
+  } else {
+    res.status(401).json({
+      success: false,
+      message: "Nombre de usuario o contraseña incorrectos",
+    });
+  }
+});
+
+
 server.use(router);
 server.listen(3001, () => {
   console.log("JSON Server está corriendo yupii en http://localhost:3001");

@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { UserContext } from "../../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 export const Login = () => {
   const { login, user } = useContext(UserContext);
@@ -34,9 +35,21 @@ export const Login = () => {
     event.preventDefault();
 
     const success = await login(username, password);
+
     if (success) {
       navigate("/home/");
     } else {
+      toast.error("Hubieron problemas con el logueo", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
       console.log("Inicio de sesión fallido");
     }
   };
@@ -114,7 +127,20 @@ export const Login = () => {
               </Grid>
             </Grid>
           </Box>
-        </Box>
+        </Box>{" "}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        <ToastContainer />
       </Container>
     </>
   );

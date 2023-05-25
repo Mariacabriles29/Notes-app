@@ -3,6 +3,7 @@ import "./App.scss";
 import { Layout } from "./layout/Layout";
 import { AppRouter } from "./routers/AppRouter";
 import { UserProvider } from "./auth/AuthContext";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (

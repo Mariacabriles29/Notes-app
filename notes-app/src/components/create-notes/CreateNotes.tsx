@@ -7,26 +7,18 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import { UserContext } from "../../auth/AuthContext";
-import {
-  Container,
-  CssBaseline,
-  Box,
-  Avatar,
-  Typography,
-  FormControlLabel,
-  Checkbox,
-  Grid,
-} from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Container, CssBaseline, Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const CreateNotePage: React.FC = () => {
-  const { login, user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [importance, setImportance] = useState<"High" | "Medium" | "Low">(
     "Low"
   );
+
   const navigate = useNavigate();
 
   const handleCreateNote = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -39,6 +31,31 @@ export const CreateNotePage: React.FC = () => {
         authorId: user?.id,
       });
       console.log("response ", response);
+
+      if (response.statusText === "Created") {
+        toast.success("Nota creada", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        toast.error("Nota no creada", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+
       navigate("/home");
     } catch (error) {
       console.error("Failed to create note", error);

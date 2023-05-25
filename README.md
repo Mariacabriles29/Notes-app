@@ -45,4 +45,4 @@ Si deseas contribuir a este proyecto, puedes enviar un pull request. Agradecemos
 
 ## Licencia
 
-Este proyecto está bajo la [Licencia MIT](mecp2992@gmail.com)
+Este proyecto fue desarrollado para una prueba tecnica de react y fue desarrollado por (mecp2992@gmail.com)

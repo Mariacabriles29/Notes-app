@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { UserContext } from "../../auth/AuthContext";
-import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -89,6 +88,8 @@ export const NotesPage: React.FC = () => {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [noteId, setNoteId] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const handleOpen = (id: number) => {
     setNoteId(id);
     setOpen(true);
@@ -194,7 +195,11 @@ export const NotesPage: React.FC = () => {
             maxWidth: "400px",
           }}
         >
-          <Search onChange={(e: any) => console.log("e ", e.target.value)}>
+          <Search
+            onChange={(e: any) => {
+              setSearchTerm(e.target.value);
+            }}
+          >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -213,78 +218,83 @@ export const NotesPage: React.FC = () => {
         <Container sx={{ py: 0 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {notes.map((card, id) => (
-              <Grid item key={id} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <CardMedia
-                    component="div"
+            {notes
+              .filter((note) =>
+                note.title.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((card, id) => (
+                <Grid item key={id} xs={12} sm={6} md={4}>
+                  <Card
                     sx={{
-                      // 16:9
-                      pt: "56.25%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
                     }}
-                    image="https://source.unsplash.com/random?wallpapers"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Container
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        paddingLeft: 0,
+                  >
+                    <CardMedia
+                      component="div"
+                      sx={{
+                        // 16:9
+                        pt: "56.25%",
                       }}
-                    >
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {card.title}
-                      </Typography>
-                      <Badge
-                        badgeContent={card.importance}
-                        color={
-                          card.importance.toLowerCase() === "High".toLowerCase()
-                            ? "error"
-                            : card.importance.toLowerCase() ===
-                              "Medium".toLowerCase()
-                            ? "warning"
-                            : "primary"
-                        }
+                      image="https://source.unsplash.com/random?wallpapers"
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Container
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          paddingLeft: 0,
+                        }}
                       >
-                        <Typography fontSize="xl">🔔</Typography>
-                      </Badge>
-                    </Container>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {card.title}
+                        </Typography>
+                        <Badge
+                          badgeContent={card.importance}
+                          color={
+                            card.importance.toLowerCase() ===
+                            "High".toLowerCase()
+                              ? "error"
+                              : card.importance.toLowerCase() ===
+                                "Medium".toLowerCase()
+                              ? "warning"
+                              : "primary"
+                          }
+                        >
+                          <Typography fontSize="xl">🔔</Typography>
+                        </Badge>
+                      </Container>
 
-                    <Typography>{card.description}</Typography>
-                    <Typography fontSize={12} fontWeight={600}>
-                      autor: {getNameUser(card.authorId)}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Fab
-                      size="small"
-                      color="secondary"
-                      aria-label="edit"
-                      onClick={() => {
-                        handleOpen(card.id);
-                      }}
-                    >
-                      <EditIcon />
-                    </Fab>
-                    <Fab
-                      size="small"
-                      color="secondary"
-                      aria-label="edit"
-                      onClick={() => handleDeleteNote(card)}
-                    >
-                      <DeleteIcon />
-                    </Fab>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+                      <Typography>{card.description}</Typography>
+                      <Typography fontSize={12} fontWeight={600}>
+                        autor: {getNameUser(card.authorId)}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Fab
+                        size="small"
+                        color="secondary"
+                        aria-label="edit"
+                        onClick={() => {
+                          handleOpen(card.id);
+                        }}
+                      >
+                        <EditIcon />
+                      </Fab>
+                      <Fab
+                        size="small"
+                        color="secondary"
+                        aria-label="edit"
+                        onClick={() => handleDeleteNote(card)}
+                      >
+                        <DeleteIcon />
+                      </Fab>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
           </Grid>
         </Container>
       </Box>{" "}

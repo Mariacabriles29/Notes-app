@@ -7,18 +7,17 @@ import {
   CssBaseline,
   FormControlLabel,
   Grid,
-  Link,
   Typography,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { UserContext } from "../../auth/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 export const Login = () => {
-  const { login, user } = useContext(UserContext);
+  const { login } = useContext(UserContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -70,7 +69,7 @@ export const Login = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Iniciar sesión
           </Typography>
           <Box
             component="form"
@@ -85,7 +84,7 @@ export const Login = () => {
               id="email"
               name="username"
               autoComplete="username"
-              label="Username"
+              label="usuario"
               value={username}
               onChange={handleUserName}
               autoFocus
@@ -95,7 +94,7 @@ export const Login = () => {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="contraseña"
               type="password"
               id="password"
               value={password}
@@ -104,7 +103,7 @@ export const Login = () => {
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="recuerdame"
             />
             <Button
               type="submit"
@@ -112,17 +111,17 @@ export const Login = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Entrar
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
+                <Link to="/register" className="link">
+                  olvidaste la contraseña?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link to="/register" className="link">
+                  {"¿No tienes una cuenta? creala"}
                 </Link>
               </Grid>
             </Grid>

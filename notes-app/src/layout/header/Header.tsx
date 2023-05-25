@@ -17,8 +17,12 @@ const pages = ["Notes"];
 const settings = ["Logout"];
 
 export const Header = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -32,7 +36,7 @@ export const Header = () => {
   };
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+    window.location.href = "/login";
   };
 
   return (

@@ -9,6 +9,16 @@
       "id": 2,
       "username": "admin2",
       "password": "admin2"
+    },
+    {
+      "username": "maria",
+      "password": "admin",
+      "id": 3
+    },
+    {
+      "username": "esther",
+      "password": "esther",
+      "id": 4
     }
   ],
   "notes": [

@@ -31,7 +31,7 @@ export const UserProvider = ({ children }: any) => {
       const response = await axios.get("http://localhost:3001/users");
 
       const currentUser = response.data.find((us: User) => {
-        if (us.username === username) return us;
+        if (us.username === username && us.password === password) return us;
       });
 
       if (currentUser && response.status === 200) {

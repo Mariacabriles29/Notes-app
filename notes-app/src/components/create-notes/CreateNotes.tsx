@@ -30,7 +30,6 @@ export const CreateNotePage: React.FC = () => {
         importance,
         authorId: user?.id,
       });
-      console.log("response ", response);
 
       if (response.statusText === "Created") {
         toast.success("Nota creada", {

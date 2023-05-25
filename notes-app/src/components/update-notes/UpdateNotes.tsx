@@ -127,7 +127,7 @@ export const UpdateNotes = (props: UpdateNotesProps) => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Edit Note
+            Editar Notas
           </Typography>
           <Box
             component="form"
@@ -178,7 +178,7 @@ export const UpdateNotes = (props: UpdateNotesProps) => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Update
+              Actualizar
             </Button>
           </Box>
         </Box>

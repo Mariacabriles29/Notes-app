@@ -15,6 +15,7 @@ import {
   Typography,
   CardActions,
   InputBase,
+  Badge,
 } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import EditIcon from "@mui/icons-material/Edit";
@@ -230,9 +231,32 @@ export const NotesPage: React.FC = () => {
                     image="https://source.unsplash.com/random?wallpapers"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {card.title}
-                    </Typography>
+                    <Container
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        paddingLeft: 0,
+                      }}
+                    >
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {card.title}
+                      </Typography>
+                      <Badge
+                        badgeContent={card.importance}
+                        color={
+                          card.importance.toLowerCase() === "High".toLowerCase()
+                            ? "error"
+                            : card.importance.toLowerCase() ===
+                              "Medium".toLowerCase()
+                            ? "warning"
+                            : "primary"
+                        }
+                      >
+                        <Typography fontSize="xl">🔔</Typography>
+                      </Badge>
+                    </Container>
+
                     <Typography>{card.description}</Typography>
                     <Typography fontSize={12} fontWeight={600}>
                       autor: {getNameUser(card.authorId)}
